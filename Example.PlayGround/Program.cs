@@ -7,8 +7,7 @@ using Example.Domain.Service.Interface;
 using Example.Domain.Validation;
 using Example.Domain.Validation.Interface;
 using Example.Repository;
-using SimpleInjector;
-using SimpleInjector.Lifestyles;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -16,25 +15,22 @@ namespace Example.PlayGround
 {
     class Program
     {
-
-        static readonly Container container;
+        private static readonly IServiceProvider _serviceProvider;
 
         static Program()
         {
             // 1. Create a new Simple Injector container
-            container = new Container();
-
-            container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
+            var container = new ServiceCollection();
 
             // 2. Configure the container (register)
-            container.Register<IUserApplication, UserApplication>();
-            container.Register<IUserService, UserService>();
-            container.Register<IUserRepository, UserRepository>();
-            container.Register<IUserAddValidation, UserAddValidation>();
-            container.Register<IUserUpdateValidation, UserUpdateValidation>();
 
-            // 3. Verify your configuration
-            container.Verify();
+            _serviceProvider = new ServiceCollection()
+                .AddScoped<IUserApplication, UserApplication>()
+                .AddScoped<IUserService, UserService>()
+                .AddScoped<IUserRepository, UserRepository>()
+                .AddScoped<IUserAddValidation, UserAddValidation>()
+                .AddScoped<IUserUpdateValidation, UserUpdateValidation>()
+                .BuildServiceProvider();
 
             Application.AutoMapper.AutoMapperInitialization.RegisterMapping();
         }
@@ -46,42 +42,37 @@ namespace Example.PlayGround
 
         static async Task MainAsync()
         {
+            var _userApp = _serviceProvider.GetService<IUserApplication>();
 
-            using (ThreadScopedLifestyle.BeginScope(container))
+            var user = new UserViewModel() { Email = Guid.NewGuid() + "@gmail.com", Name = "Antônio Filho", Password = "123456" };
+
+            var resultAdd = await _userApp.Add(user);
+
+            if (!resultAdd.isValid)
+                resultAdd.messages.ForEach(x => Console.WriteLine(x.message));
+            else
             {
-                var _userApp = container.GetInstance<UserApplication>();
+                Console.WriteLine("Registred user Id: {0}", resultAdd.Id.Value);
 
-                var user = new UserViewModel() { Email = Guid.NewGuid() + "@gmail.com", Name = "Antônio Filho", Password = "123456" };
+                user = await _userApp.Get(resultAdd.Id.Value);
 
-                var resultAdd = await _userApp.Add(user);
+                user.Email = "";
 
-                if (!resultAdd.isValid)
+                var resultUpdate = await _userApp.Update(user);
+
+                if (!resultUpdate.isValid)
                     resultAdd.messages.ForEach(x => Console.WriteLine(x.message));
                 else
                 {
-                    Console.WriteLine("Registred user Id: {0}", resultAdd.Id.Value);
+                    Console.WriteLine("E-mail updated");
 
                     user = await _userApp.Get(resultAdd.Id.Value);
+                    await _userApp.Delete(user);
 
-                    user.Email = "";
-
-                    var resultUpdate = await _userApp.Update(user);
-
-                    if (!resultUpdate.isValid)
-                        resultAdd.messages.ForEach(x => Console.WriteLine(x.message));
-                    else
-                    {
-                        Console.WriteLine("E-mail updated");
-
-                        user = await _userApp.Get(resultAdd.Id.Value);
-                        await _userApp.Delete(user);
-
-                        Console.WriteLine("User deleted");
-                    }
+                    Console.WriteLine("User deleted");
                 }
             }
 
-            
             Console.ReadKey();
         }
 
