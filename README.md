@@ -6,7 +6,7 @@ DDD template for new projects
 - Domain Driven Design
 - .NET Core
 - FluentValidator 
-- SimpleInjector
+- Native .NET Core DI
 - Automapper
 - Dapper
 - Dapper.Contrib
