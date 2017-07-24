@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Domain", "Example.Domain\Example.Domain.csproj", "{297B333D-19D9-4099-80AF-9CD42B39DB4F}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.PlayGround", "Example.PlayGround\Example.PlayGround.csproj", "{2BC733D2-9ADD-44D6-8F09-62085C583031}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Repository", "Example.Repository\Example.Repository.csproj", "{34CB14CA-4438-452F-B61D-CE807CAB55C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.API", "Example.API\Example.API.csproj", "{A0D2DAA4-FE5F-4209-8A45-4B9D526DAF3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{34CB14CA-4438-452F-B61D-CE807CAB55C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34CB14CA-4438-452F-B61D-CE807CAB55C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34CB14CA-4438-452F-B61D-CE807CAB55C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0D2DAA4-FE5F-4209-8A45-4B9D526DAF3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0D2DAA4-FE5F-4209-8A45-4B9D526DAF3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0D2DAA4-FE5F-4209-8A45-4B9D526DAF3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0D2DAA4-FE5F-4209-8A45-4B9D526DAF3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

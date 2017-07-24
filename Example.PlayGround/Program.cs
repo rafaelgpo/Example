@@ -19,10 +19,7 @@ namespace Example.PlayGround
 
         static Program()
         {
-            // 1. Create a new Simple Injector container
-            var container = new ServiceCollection();
-
-            // 2. Configure the container (register)
+            // Configure the container
 
             _serviceProvider = new ServiceCollection()
                 .AddScoped<IUserApplication, UserApplication>()
