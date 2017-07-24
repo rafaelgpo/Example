@@ -64,7 +64,7 @@ namespace Example.PlayGround
                     Console.WriteLine("E-mail updated");
 
                     user = await _userApp.Get(resultAdd.Id.Value);
-                    await _userApp.Delete(user);
+                    await _userApp.Delete(resultAdd.Id.Value);
 
                     Console.WriteLine("User deleted");
                 }

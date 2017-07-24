@@ -9,7 +9,7 @@ namespace Example.Domain.Service.Interface
     public interface IUserService 
     {
         Task<AddResponse> Add(User user);
-        Task Delete(User user);
+        Task Delete(int user);
         Task<User> Get(int id);
         Task<User> Get(string email);
         Task<UpdateResponse> Update(User user);

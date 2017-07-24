@@ -41,8 +41,9 @@ namespace Example.Domain.Service
             return new AddResponse(_addValidation.messages);
         }
 
-        public async Task Delete(User user)
+        public async Task Delete(int id)
         {
+            var user = await Get(id);
             await _repository.Delete(user);
         }
 

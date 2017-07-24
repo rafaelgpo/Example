@@ -24,9 +24,9 @@ namespace Example.Application
             return await _service.Add(Mapper.Map<UserViewModel, User>(user));
         }
 
-        public async Task Delete(UserViewModel user)
+        public async Task Delete(int id)
         {
-            await _service.Delete(Mapper.Map<UserViewModel, User>(user));
+            await _service.Delete(id);
         }
 
         public async Task<UserViewModel> Get(int id)
