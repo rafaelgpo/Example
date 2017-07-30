@@ -10,6 +10,4 @@ DDD template for new projects
 - Automapper
 - Dapper
 - Dapper.Contrib
-
-## What you will NOT find:
-- Exceptions for entity validations
+- No exceptions for entity validations
