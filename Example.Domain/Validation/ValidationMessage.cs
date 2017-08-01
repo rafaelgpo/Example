@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Example.Domain.Events;
+using System;
 using System.Text;
 
 namespace Example.Domain.Validation
 {
-    public class ValidationMessage
+    public class ValidationMessage : Event
     {
         public string cod { get; set; }
         public string message { get; set; }

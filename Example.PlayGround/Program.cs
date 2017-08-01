@@ -45,30 +45,30 @@ namespace Example.PlayGround
 
             var resultAdd = await _userApp.Add(user);
 
-            if (!resultAdd.isValid)
-                resultAdd.messages.ForEach(x => Console.WriteLine(x.message));
-            else
-            {
-                Console.WriteLine("Registred user Id: {0}", resultAdd.Id.Value);
+            //if (!resultAdd.isValid)
+            //    resultAdd.messages.ForEach(x => Console.WriteLine(x.message));
+            //else
+            //{
+            //    Console.WriteLine("Registred user Id: {0}", resultAdd.Id.Value);
 
-                user = await _userApp.Get(resultAdd.Id.Value);
+            //    user = await _userApp.Get(resultAdd.Id.Value);
 
-                user.Email = "";
+            //    user.Email = "";
 
-                var resultUpdate = await _userApp.Update(user);
+            //    var resultUpdate = await _userApp.Update(user);
 
-                if (!resultUpdate.isValid)
-                    resultAdd.messages.ForEach(x => Console.WriteLine(x.message));
-                else
-                {
-                    Console.WriteLine("E-mail updated");
+            //    if (!resultUpdate.isValid)
+            //        resultAdd.messages.ForEach(x => Console.WriteLine(x.message));
+            //    else
+            //    {
+            //        Console.WriteLine("E-mail updated");
 
-                    user = await _userApp.Get(resultAdd.Id.Value);
-                    await _userApp.Delete(resultAdd.Id.Value);
+            //        user = await _userApp.Get(resultAdd.Id.Value);
+            //        await _userApp.Delete(resultAdd.Id.Value);
 
-                    Console.WriteLine("User deleted");
-                }
-            }
+            //        Console.WriteLine("User deleted");
+            //    }
+            //}
 
             Console.ReadKey();
         }
