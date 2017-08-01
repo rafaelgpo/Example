@@ -25,9 +25,7 @@ namespace Example.Domain.Service
         public async Task<int?> Add(User user)
         {
             if (_addValidation.IsValid(user))
-            {
                 return await _repository.Add(user);
-            }
 
             return null;
         }

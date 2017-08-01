@@ -1,4 +1,5 @@
 ﻿using Example.Domain.Events.Interface;
+using Example.Domain.Validation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,12 +11,12 @@ namespace Example.Domain.Events.Bus
         public static Func<IServiceProvider> ContainerAccessor { get; set; }
         private static IServiceProvider Container => ContainerAccessor();
 
-        public void RaiseEvent<T>(T theEvent) where T : Event
+        public void RaiseEvent<T>(T theEvent) where T : ValidationMessage
         {
             Publish(theEvent);
         }
 
-        private static void Publish<T>(T message) where T : Message
+        private static void Publish<T>(T message) where T : ValidationMessage
         {
             if (Container == null) return;
 

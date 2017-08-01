@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Example.Domain.Validation
 {
-    public class ValidationMessage : Event
+    public class ValidationMessage
     {
         public string cod { get; set; }
         public string message { get; set; }

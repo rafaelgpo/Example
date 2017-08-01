@@ -12,7 +12,7 @@ namespace Example.Domain.Validation
         {
         }
 
-        public bool IsValid(User user)
+        public new bool IsValid(User user)
         {
             EmptyNameValidationRules();
             EmptyEmailValidationRules();
