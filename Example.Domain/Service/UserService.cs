@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Example.Domain.Model;
 using Example.Domain.Repository.Interface;
 using System.Threading.Tasks;
-using Example.Domain.Messaging;
 using System;
 using Example.Domain.Validation;
 using Example.Domain.Validation.Interface;
@@ -16,33 +15,24 @@ namespace Example.Domain.Service
         private readonly IUserAddValidation _addValidation;
         private readonly IUserUpdateValidation _updateValidation;
 
-        public UserService
-            (
-                IUserRepository repository, 
-                IUserAddValidation addValidation, 
-                IUserUpdateValidation updateValidation
-            )
+        public UserService(IUserRepository repository, IUserAddValidation addValidation, IUserUpdateValidation updateValidation)
         {
             this._repository = repository;
             this._addValidation = addValidation;
             this._updateValidation = updateValidation;
         }
 
-        public async Task<AddResponse> Add(User user)
+        public async Task<int?> Add(User user)
         {
-            _addValidation.Validate(user);
+            if (_addValidation.IsValid(user))
+                return await _repository.Add(user);
 
-            if (_addValidation.isValid)
-            {
-                var id = await _repository.Add(user);
-                return new AddResponse(id);
-            }
-
-            return new AddResponse(_addValidation.messages);
+            return null;
         }
 
-        public async Task Delete(User user)
+        public async Task Delete(int id)
         {
+            var user = await Get(id);
             await _repository.Delete(user);
         }
 
@@ -53,7 +43,9 @@ namespace Example.Domain.Service
 
         public async Task<User> Get(string email)
         {
-            return await _repository.Get(email);
+            var user = await _repository.Get(email);
+
+            return user;
         }
 
         public async Task<IEnumerable<User>> GetAll()
@@ -61,16 +53,10 @@ namespace Example.Domain.Service
             return await _repository.GetAll();
         }
 
-        public async Task<UpdateResponse> Update(User user)
+        public async Task Update(User user)
         {
-            _updateValidation.Validate(user);
-
-            if (_updateValidation.isValid)
-            {
+            if (_updateValidation.IsValid(user))
                 await _repository.Update(user);
-            }
-
-            return new UpdateResponse(_updateValidation.messages);
         }
     }
 }

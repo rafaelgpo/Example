@@ -5,8 +5,6 @@ using AutoMapper;
 using Example.Domain.Model;
 using Example.Domain.Service.Interface;
 using System.Threading.Tasks;
-using Example.Domain.Messaging;
-using System;
 
 namespace Example.Application
 {
@@ -19,14 +17,14 @@ namespace Example.Application
             this._service = service;
         }
 
-        public async Task<AddResponse> Add(UserViewModel user)
+        public async Task<int?> Add(UserViewModel user)
         {
             return await _service.Add(Mapper.Map<UserViewModel, User>(user));
         }
 
-        public async Task Delete(UserViewModel user)
+        public async Task Delete(int id)
         {
-            await _service.Delete(Mapper.Map<UserViewModel, User>(user));
+            await _service.Delete(id);
         }
 
         public async Task<UserViewModel> Get(int id)
@@ -39,9 +37,9 @@ namespace Example.Application
             return Mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>(await _service.GetAll());
         }
 
-        public async Task<UpdateResponse> Update(UserViewModel user)
+        public async Task Update(UserViewModel user)
         {
-            return await _service.Update(Mapper.Map<UserViewModel, User>(user));
+            await _service.Update(Mapper.Map<UserViewModel, User>(user));
         }
     }
 }
