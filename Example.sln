@@ -7,11 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Domain", "Example.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Application", "Example.Service\Example.Application.csproj", "{3FB98F2E-D5A7-4B4C-9BF5-D4ECEC319438}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.PlayGround", "Example.PlayGround\Example.PlayGround.csproj", "{2BC733D2-9ADD-44D6-8F09-62085C583031}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Repository", "Example.Repository\Example.Repository.csproj", "{34CB14CA-4438-452F-B61D-CE807CAB55C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.API", "Example.API\Example.API.csproj", "{A0D2DAA4-FE5F-4209-8A45-4B9D526DAF3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.API", "Example.API\Example.API.csproj", "{A0D2DAA4-FE5F-4209-8A45-4B9D526DAF3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +25,6 @@ Global
 		{3FB98F2E-D5A7-4B4C-9BF5-D4ECEC319438}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FB98F2E-D5A7-4B4C-9BF5-D4ECEC319438}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FB98F2E-D5A7-4B4C-9BF5-D4ECEC319438}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BC733D2-9ADD-44D6-8F09-62085C583031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BC733D2-9ADD-44D6-8F09-62085C583031}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BC733D2-9ADD-44D6-8F09-62085C583031}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BC733D2-9ADD-44D6-8F09-62085C583031}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34CB14CA-4438-452F-B61D-CE807CAB55C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{34CB14CA-4438-452F-B61D-CE807CAB55C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34CB14CA-4438-452F-B61D-CE807CAB55C6}.Release|Any CPU.ActiveCfg = Release|Any CPU

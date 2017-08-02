@@ -48,8 +48,7 @@ namespace Example.API
             services.AddScoped<IUserApplication, UserApplication>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserAddValidation, UserAddValidation>();
-            services.AddScoped<IUserUpdateValidation, UserUpdateValidation>();
+            services.AddScoped<IUserValidation, UserValidation>();
             services.AddScoped<IDomainNotificationHandler<ValidationMessage>, DomainNotificationHandler>();
             services.AddScoped<IBus, InMemoryBus>();
         }

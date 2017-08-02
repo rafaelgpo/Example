@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Example.Domain.Validation
 {
-    public class EntityValidation<T> : AbstractValidator<T>, IEntityValidation<T>
+    public class EntityValidation<T> : AbstractValidator<T>
     {
         public readonly IUserRepository _repository;
         private readonly IBus _bus;
@@ -22,12 +22,19 @@ namespace Example.Domain.Validation
 
         public bool IsValid(T entity)
         {
-            var result = base.Validate(entity);
+            if (entity == null)
+            {
+                _bus.RaiseEvent(new ValidationMessage("NullObject", "Object not exists"));
+                return false;
+            }
+            else
+            {
+                var result = base.Validate(entity);
 
-            foreach (var error in base.Validate(entity).Errors)
-                _bus.RaiseEvent(new ValidationMessage(error.ErrorCode, error.ErrorMessage));
-
-            return result.IsValid;
+                foreach (var error in base.Validate(entity).Errors)
+                    _bus.RaiseEvent(new ValidationMessage(error.ErrorCode, error.ErrorMessage));
+                return result.IsValid;
+            }
         }
     }
 }

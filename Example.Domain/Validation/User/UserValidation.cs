@@ -6,17 +6,28 @@ using FluentValidation;
 
 namespace Example.Domain.Validation
 {
-    public class UserAddValidation : EntityValidation<User>, IUserAddValidation
+    public class UserValidation : EntityValidation<User>, IUserValidation
     {
-        public UserAddValidation(IBus bus, IUserRepository repository) : base(bus, repository)
+        public UserValidation(IBus bus, IUserRepository repository) : base(bus, repository)
         {
         }
 
-        public new bool IsValid(User user)
+        public bool IsValidForAdd(User user)
         {
             EmptyNameValidationRules();
             EmptyEmailValidationRules();
 
+            return base.IsValid(user);
+        }
+
+        public bool IsValidForUpdate(User user)
+        {
+            EmptyNameValidationRules();
+            return base.IsValid(user);
+        }
+
+        public bool IsValidForGet(User user)
+        {
             return base.IsValid(user);
         }
 
@@ -27,8 +38,6 @@ namespace Example.Domain.Validation
 
         private void EmptyEmailValidationRules()
         {
-            _repository.Get("rafaelgpo@gmail.com");
-
             RuleFor(user => user.Email).NotEmpty().WithMessage("Please specify a e-mail");
         }
     }

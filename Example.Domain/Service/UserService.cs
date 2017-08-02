@@ -6,25 +6,24 @@ using System.Threading.Tasks;
 using System;
 using Example.Domain.Validation;
 using Example.Domain.Validation.Interface;
+using Example.Domain.Events.Interface;
 
 namespace Example.Domain.Service
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
-        private readonly IUserAddValidation _addValidation;
-        private readonly IUserUpdateValidation _updateValidation;
+        private readonly IUserValidation _userValidation;
 
-        public UserService(IUserRepository repository, IUserAddValidation addValidation, IUserUpdateValidation updateValidation)
+        public UserService(IUserRepository repository, IUserValidation userValidation)
         {
             this._repository = repository;
-            this._addValidation = addValidation;
-            this._updateValidation = updateValidation;
+            this._userValidation = userValidation;
         }
 
         public async Task<int?> Add(User user)
         {
-            if (_addValidation.IsValid(user))
+            if (_userValidation.IsValidForAdd(user))
                 return await _repository.Add(user);
 
             return null;
@@ -38,7 +37,13 @@ namespace Example.Domain.Service
 
         public async Task<User> Get(int id)
         {
-            return await _repository.Get(id);
+            var user = await _repository.Get(id);
+
+            if (_userValidation.IsValidForGet(user))
+                return user;
+
+            return null;
+
         }
 
         public async Task<User> Get(string email)
@@ -55,7 +60,7 @@ namespace Example.Domain.Service
 
         public async Task Update(User user)
         {
-            if (_updateValidation.IsValid(user))
+            if (_userValidation.IsValidForUpdate(user))
                 await _repository.Update(user);
         }
     }
