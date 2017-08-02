@@ -4,6 +4,7 @@ DDD template for new projects
 ## What you will find:
 
 - Domain Driven Design
+- Domain Events
 - .NET Core
 - FluentValidator 
 - Native .NET Core DI
