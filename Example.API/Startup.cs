@@ -16,10 +16,7 @@ using Example.Domain.Service;
 using Example.Repository;
 using Example.Domain.Validation;
 using Example.API.Models;
-using Example.Domain.Events.Interface;
-using Example.Domain.Events;
 using Microsoft.AspNetCore.Http;
-using Example.Domain.Events.Bus;
 
 namespace Example.API
 {
@@ -49,8 +46,6 @@ namespace Example.API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserValidation, UserValidation>();
-            services.AddScoped<IDomainNotificationHandler<ValidationMessage>, DomainNotificationHandler>();
-            services.AddScoped<IBus, InMemoryBus>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,9 +58,6 @@ namespace Example.API
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             app.UseMvc();
-
-            // Setting the IContainer interface for use like service locator for events.
-            InMemoryBus.ContainerAccessor = () => accessor.HttpContext.RequestServices;
         }
     }
 }

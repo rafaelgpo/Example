@@ -1,5 +1,4 @@
-﻿using Example.Domain.Events;
-using System;
+﻿using System;
 using System.Text;
 
 namespace Example.Domain.Validation

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System;
 using Example.Domain.Validation;
 using Example.Domain.Validation.Interface;
-using Example.Domain.Events.Interface;
+using Example.Domain.Response;
 
 namespace Example.Domain.Service
 {
@@ -21,12 +21,22 @@ namespace Example.Domain.Service
             this._userValidation = userValidation;
         }
 
-        public async Task<int?> Add(User user)
+        public async Task<Response<int?>> Add(User user)
         {
             if (_userValidation.IsValidForAdd(user))
-                return await _repository.Add(user);
+                return new Response<int?>(await _repository.Add(user));
+            else
+                return new Response<int?>(_userValidation.messages);
+        }
 
-            return null;
+        public async Task<Response<User>> GetGeneric(int id)
+        {
+            var user = await _repository.Get(id);
+
+            if (_userValidation.IsValidForGet(user))
+                return new Response<User>(user);
+            else
+                return new Response<User>(_userValidation.messages);
         }
 
         public async Task Delete(int id)
@@ -43,7 +53,6 @@ namespace Example.Domain.Service
                 return user;
 
             return null;
-
         }
 
         public async Task<User> Get(string email)

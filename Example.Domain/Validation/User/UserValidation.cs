@@ -1,5 +1,4 @@
-﻿using Example.Domain.Events.Interface;
-using Example.Domain.Model;
+﻿using Example.Domain.Model;
 using Example.Domain.Repository.Interface;
 using Example.Domain.Validation.Interface;
 using FluentValidation;
@@ -8,27 +7,23 @@ namespace Example.Domain.Validation
 {
     public class UserValidation : EntityValidation<User>, IUserValidation
     {
-        public UserValidation(IBus bus, IUserRepository repository) : base(bus, repository)
-        {
-        }
-
         public bool IsValidForAdd(User user)
         {
             EmptyNameValidationRules();
             EmptyEmailValidationRules();
 
-            return base.IsValid(user);
+            return base.Validate(user);
         }
 
         public bool IsValidForUpdate(User user)
         {
             EmptyNameValidationRules();
-            return base.IsValid(user);
+            return base.Validate(user);
         }
 
         public bool IsValidForGet(User user)
         {
-            return base.IsValid(user);
+            return base.Validate(user);
         }
 
         private void EmptyNameValidationRules()

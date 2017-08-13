@@ -5,6 +5,7 @@ using AutoMapper;
 using Example.Domain.Model;
 using Example.Domain.Service.Interface;
 using System.Threading.Tasks;
+using Example.Domain.Response;
 
 namespace Example.Application
 {
@@ -17,7 +18,7 @@ namespace Example.Application
             this._service = service;
         }
 
-        public async Task<int?> Add(UserViewModel user)
+        public async Task<Response<int?>> Add(UserViewModel user)
         {
             return await _service.Add(Mapper.Map<UserViewModel, User>(user));
         }
@@ -30,6 +31,11 @@ namespace Example.Application
         public async Task<UserViewModel> Get(int id)
         {
             return Mapper.Map<User, UserViewModel>(await _service.Get(id));
+        }
+
+        public async Task<Response<UserViewModel>> GetGeneric(int id)
+        {
+            return Mapper.Map<Response<User>, Response<UserViewModel>>(await _service.GetGeneric(id));
         }
 
         public async Task<IEnumerable<UserViewModel>> GetAll()

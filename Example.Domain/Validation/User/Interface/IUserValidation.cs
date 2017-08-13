@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Example.Domain.Validation.Interface
 {
-    public interface IUserValidation
+    public interface IUserValidation : IEntityValidation<User>
     {
         bool IsValidForAdd(User user);
         bool IsValidForUpdate(User user);

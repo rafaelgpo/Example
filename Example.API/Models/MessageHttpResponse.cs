@@ -1,5 +1,5 @@
-﻿using Example.Domain.Events.Interface;
-using Example.Domain.Model;
+﻿using Example.Domain.Model;
+using Example.Domain.Response;
 using Example.Domain.Validation;
 using Example.Domain.Validation.Interface;
 using Newtonsoft.Json;
@@ -19,18 +19,23 @@ namespace Example.API.Models
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<ValidationMessage> messages { get; set; }
 
-        public MessageHttpResponse(Object data, IDomainNotificationHandler<ValidationMessage> domainNotification)
+        public static MessageHttpResponse Response(string code, string message, typeMessage type)
         {
-            this.data = data;
-            this.messages = domainNotification.GetNotifications();
-            this.type = domainNotification.HasNotifications() ? typeMessage.VALIDATION_ERROR : typeMessage.SUCCESS;
+            var httpResponse = new MessageHttpResponse();
+            httpResponse.messages.Add(new ValidationMessage(code, message));
+            httpResponse.type = type;
+            return httpResponse;
         }
 
-        public MessageHttpResponse(string code, string message, typeMessage type)
+        public static MessageHttpResponse Response<T>(Response<T> response)
         {
-            this.messages = new List<ValidationMessage>();
-            this.messages.Add(new ValidationMessage(code, message));
-            this.type = type;
+            var httpResponse = new MessageHttpResponse();
+
+            httpResponse.data = response.Data;
+            httpResponse.messages = !response.IsValid ? response.Messages : null;
+            httpResponse.type = !response.IsValid ? typeMessage.VALIDATION_ERROR : typeMessage.SUCCESS;
+
+            return httpResponse;
         }
     }
 

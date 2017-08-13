@@ -1,6 +1,4 @@
-﻿using Example.Domain.Events;
-using Example.Domain.Events.Interface;
-using Example.Domain.Repository.Interface;
+﻿using Example.Domain.Repository.Interface;
 using FluentValidation;
 using FluentValidation.Results;
 using System;
@@ -9,32 +7,26 @@ using System.Text;
 
 namespace Example.Domain.Validation
 {
-    public class EntityValidation<T> : AbstractValidator<T>
+    public class EntityValidation<T> : AbstractValidator<T>, IEntityValidation<T>
     {
-        public readonly IUserRepository _repository;
-        private readonly IBus _bus;
+        public ValidationMessages messages { get; set; }
+        public bool isValid { get { return messages.Count == 0 ? true : false; } }
 
-        public EntityValidation(IBus bus, IUserRepository repository)
+        public EntityValidation()
         {
-            _bus = bus;
-            _repository = repository;
+            messages = new ValidationMessages();
         }
 
-        public bool IsValid(T entity)
+        public new bool Validate(T entity)
         {
-            if (entity == null)
+            if (entity != null)
             {
-                _bus.RaiseEvent(new ValidationMessage("NullObject", "Object not exists"));
-                return false;
-            }
-            else
-            {
-                var result = base.Validate(entity);
-
                 foreach (var error in base.Validate(entity).Errors)
-                    _bus.RaiseEvent(new ValidationMessage(error.ErrorCode, error.ErrorMessage));
-                return result.IsValid;
-            }
+                    messages.Add(new ValidationMessage(error.ErrorCode, error.ErrorMessage));
+            }else
+                messages.Add(new ValidationMessage("NullValue", "Object not found"));
+
+            return isValid;
         }
     }
 }
