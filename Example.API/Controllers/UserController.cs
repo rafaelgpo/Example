@@ -8,6 +8,7 @@ using Example.Domain.Validation;
 using Example.Domain.Events.Interface;
 using Example.Domain.Events;
 using System;
+using MediatR;
 
 namespace Example.API.Controllers
 {
@@ -18,7 +19,7 @@ namespace Example.API.Controllers
 
         private readonly IUserApplication _userApp;
 
-        public UserController(IUserApplication userApp, IDomainNotificationHandler<ValidationMessage> notifications) : base(notifications)
+        public UserController(IUserApplication userApp, INotificationHandler<ValidationMessage> notifications) : base(notifications)
         {
             _userApp = userApp;
         }

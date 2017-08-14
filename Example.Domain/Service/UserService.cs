@@ -39,11 +39,10 @@ namespace Example.Domain.Service
         {
             var user = await _repository.Get(id);
 
-            if (_userValidation.IsValidForGet(user))
+            if (_userValidation.Exists(user))
                 return user;
 
             return null;
-
         }
 
         public async Task<User> Get(string email)
@@ -60,7 +59,9 @@ namespace Example.Domain.Service
 
         public async Task Update(User user)
         {
-            if (_userValidation.IsValidForUpdate(user))
+            var userOld = await _repository.Get(user.Id);
+
+            if (_userValidation.Exists(userOld) && _userValidation.IsValidForUpdate(user))
                 await _repository.Update(user);
         }
     }

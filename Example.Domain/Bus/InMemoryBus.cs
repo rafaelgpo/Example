@@ -1,39 +1,31 @@
 ﻿using Example.Domain.Events.Interface;
 using Example.Domain.Validation;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Example.Domain.Events.Bus
 {
-    public sealed class InMemoryBus : IBus
+    public sealed class InMemoryBus : IMediatorHandler
     {
-        public static Func<IServiceProvider> ContainerAccessor { get; set; }
-        private static IServiceProvider Container => ContainerAccessor();
+        private readonly IMediator _mediator;
 
-        public void RaiseEvent<T>(T theEvent) where T : ValidationMessage
+        public InMemoryBus(IMediator mediator)
         {
-            Publish(theEvent);
+            _mediator = mediator;
         }
 
-        private static void Publish<T>(T message) where T : ValidationMessage
+        public Task RaiseEvent<T>(T theEvent) where T : ValidationMessage
         {
-            if (Container == null) return;
-
-            var obj = Container.GetService(typeof(IDomainNotificationHandler<T>));
-
-            ((IHandler<T>)obj).Handle(message);
-
+            return Publish(theEvent);
         }
 
-        private object GetService(Type serviceType)
+        private Task Publish<T>(T message) where T : ValidationMessage
         {
-            return Container.GetService(serviceType);
+            return _mediator.Publish(message);
         }
 
-        private T GetService<T>()
-        {
-            return (T)Container.GetService(typeof(T));
-        }
     }
 }

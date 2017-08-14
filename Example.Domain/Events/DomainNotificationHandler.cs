@@ -1,5 +1,6 @@
 ﻿using Example.Domain.Events.Interface;
 using Example.Domain.Validation;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Example.Domain.Events
 {
-    public class DomainNotificationHandler : IDomainNotificationHandler<ValidationMessage>
+    public class DomainNotificationHandler : INotificationHandler<ValidationMessage>
     {
         private List<ValidationMessage> _notifications;
 

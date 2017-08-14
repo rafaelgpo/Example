@@ -1,4 +1,5 @@
-﻿using Example.Domain.Events.Interface;
+﻿using Example.Domain.Events;
+using Example.Domain.Events.Interface;
 using Example.Domain.Model;
 using Example.Domain.Validation;
 using Example.Domain.Validation.Interface;
@@ -19,10 +20,10 @@ namespace Example.API.Models
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<ValidationMessage> messages { get; set; }
 
-        public MessageHttpResponse(Object data, IDomainNotificationHandler<ValidationMessage> domainNotification)
+        public MessageHttpResponse(Object data, DomainNotificationHandler domainNotification)
         {
             this.data = data;
-            this.messages = domainNotification.GetNotifications();
+            this.messages = domainNotification.HasNotifications() ? domainNotification.GetNotifications() : null;
             this.type = domainNotification.HasNotifications() ? typeMessage.VALIDATION_ERROR : typeMessage.SUCCESS;
         }
 

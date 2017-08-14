@@ -10,5 +10,6 @@ namespace Example.Domain.Validation.Interface
         bool IsValidForAdd(User user);
         bool IsValidForUpdate(User user);
         bool IsValidForGet(User user);
+        bool Exists(User user);
     }
 }

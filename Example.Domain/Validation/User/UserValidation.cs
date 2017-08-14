@@ -1,4 +1,5 @@
-﻿using Example.Domain.Events.Interface;
+﻿using System;
+using Example.Domain.Events.Interface;
 using Example.Domain.Model;
 using Example.Domain.Repository.Interface;
 using Example.Domain.Validation.Interface;
@@ -8,7 +9,7 @@ namespace Example.Domain.Validation
 {
     public class UserValidation : EntityValidation<User>, IUserValidation
     {
-        public UserValidation(IBus bus, IUserRepository repository) : base(bus, repository)
+        public UserValidation(IMediatorHandler bus, IUserRepository repository) : base(bus, repository)
         {
         }
 
@@ -39,6 +40,11 @@ namespace Example.Domain.Validation
         private void EmptyEmailValidationRules()
         {
             RuleFor(user => user.Email).NotEmpty().WithMessage("Please specify a e-mail");
+        }
+
+        public new bool Exists(User user)
+        {
+            return base.Exists(user);
         }
     }
 }
