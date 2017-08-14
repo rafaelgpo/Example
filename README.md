@@ -4,6 +4,7 @@ DDD template for new projects
 ## What you will find:
 
 - Domain Driven Design
+- MediatR
 - Domain Events
 - .NET Core
 - FluentValidator 
@@ -11,4 +12,3 @@ DDD template for new projects
 - Automapper
 - Dapper
 - Dapper.Contrib
-- No exceptions for entity validations
