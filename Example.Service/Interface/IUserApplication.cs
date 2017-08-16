@@ -11,6 +11,6 @@ namespace Example.Application.Interface
         Task<UserViewModel> Get(int id);
         Task Update(UserViewModel user);
         Task<IEnumerable<UserViewModel>> GetAll();
-
+        Task Copy(string oldEmail, string newEmail);
     }
 }

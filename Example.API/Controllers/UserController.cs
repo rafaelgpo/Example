@@ -8,6 +8,7 @@ using Example.Domain.Validation;
 using Example.Domain.Events.Interface;
 using Example.Domain.Events;
 using System;
+using MediatR;
 
 namespace Example.API.Controllers
 {
@@ -18,7 +19,7 @@ namespace Example.API.Controllers
 
         private readonly IUserApplication _userApp;
 
-        public UserController(IUserApplication userApp, IDomainNotificationHandler<ValidationMessage> notifications) : base(notifications)
+        public UserController(IUserApplication userApp, INotificationHandler<ValidationMessage> notifications) : base(notifications)
         {
             _userApp = userApp;
         }
@@ -45,12 +46,20 @@ namespace Example.API.Controllers
             return HttpResponse(await _userApp.Add(user));
         }
 
+        // Copy: api/User
+        [HttpPost]
+        [Route("Copy")]
+        public async Task<MessageHttpResponse> Copy([FromBody] CopyUserViewModel copyUser)
+        {
+            await _userApp.Copy(copyUser.oldEmail, copyUser.newEmail);
+            return HttpResponse();
+        }
+
         // PUT: api/User
         [HttpPut]
         public async Task<MessageHttpResponse> Put([FromBody] UserViewModel user)
         {
             await _userApp.Update(user);
-
             return HttpResponse();
         }
 

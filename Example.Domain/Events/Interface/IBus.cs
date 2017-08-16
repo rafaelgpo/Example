@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Example.Domain.Events.Interface
 {
-    public interface IBus
+    public interface IMediatorHandler
     {
-        void RaiseEvent<T>(T theEvent) where T : ValidationMessage;
+        Task RaiseEvent<T>(T @event) where T : ValidationMessage;
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Example.Domain.Repository.Interface
 {
-    public interface IUserRepository 
+    public interface IUserRepository
     {
         Task<int> Add(User user);
         Task Delete(User id);

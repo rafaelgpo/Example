@@ -20,6 +20,9 @@ using Example.Domain.Events.Interface;
 using Example.Domain.Events;
 using Microsoft.AspNetCore.Http;
 using Example.Domain.Events.Bus;
+using MediatR;
+using Example.Repository.UoW;
+using Example.Repository.UoW.Interface;
 
 namespace Example.API
 {
@@ -45,17 +48,20 @@ namespace Example.API
             // Add framework services.
             services.AddMvc();
 
+            // Adding MediatR for Domain Events and Notifications
+            services.AddMediatR(typeof(Startup));
+
+            services.AddScoped<IMediatorHandler, InMemoryBus>();
             services.AddScoped<IUserApplication, UserApplication>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserValidation, UserValidation>();
-            services.AddScoped<IDomainNotificationHandler<ValidationMessage>, DomainNotificationHandler>();
-            services.AddScoped<IBus, InMemoryBus>();
+            services.AddScoped<INotificationHandler<ValidationMessage>, DomainNotificationHandler>();
+            services.AddScoped<IUserUoW, UserUoW>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
-                                      IHttpContextAccessor accessor)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -63,9 +69,6 @@ namespace Example.API
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             app.UseMvc();
-
-            // Setting the IContainer interface for use like service locator for events.
-            InMemoryBus.ContainerAccessor = () => accessor.HttpContext.RequestServices;
         }
     }
 }
