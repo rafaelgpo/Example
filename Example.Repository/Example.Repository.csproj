@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Example.Domain\Example.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interface\" />
+  </ItemGroup>
+
 </Project>

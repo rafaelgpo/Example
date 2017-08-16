@@ -21,6 +21,8 @@ using Example.Domain.Events;
 using Microsoft.AspNetCore.Http;
 using Example.Domain.Events.Bus;
 using MediatR;
+using Example.Repository.UoW;
+using Example.Repository.UoW.Interface;
 
 namespace Example.API
 {
@@ -55,7 +57,7 @@ namespace Example.API
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserValidation, UserValidation>();
             services.AddScoped<INotificationHandler<ValidationMessage>, DomainNotificationHandler>();
-
+            services.AddScoped<IUserUoW, UserUoW>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -46,12 +46,20 @@ namespace Example.API.Controllers
             return HttpResponse(await _userApp.Add(user));
         }
 
+        // Copy: api/User
+        [HttpPost]
+        [Route("Copy")]
+        public async Task<MessageHttpResponse> Copy([FromBody] CopyUserViewModel copyUser)
+        {
+            await _userApp.Copy(copyUser.oldEmail, copyUser.newEmail);
+            return HttpResponse();
+        }
+
         // PUT: api/User
         [HttpPut]
         public async Task<MessageHttpResponse> Put([FromBody] UserViewModel user)
         {
             await _userApp.Update(user);
-
             return HttpResponse();
         }
 

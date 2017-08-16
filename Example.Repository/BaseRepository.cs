@@ -4,40 +4,61 @@ using System.Data.SqlClient;
 
 namespace Example.Repository
 {
-    public abstract class BaseRepository
+    public abstract class BaseRepository : IBaseRepository
     {
-        public static string ConnectionString = "Data Source=localhost;Initial Catalog=example;Integrated Security=SSPI;";
+        private static string ConnectionString = "Data Source=localhost;Initial Catalog=example;Integrated Security=SSPI;";
 
-        protected IDbConnection _connection;
-        protected IDbConnection connection => _connection ?? (_connection = GetOpenConnection());
+        protected IDbConnection _connection { get { return GetOpenConnection(); } }
+        public IDbTransaction _transaction { get; set; }
 
-        public static IDbConnection GetOpenConnection(bool mars = false)
+        public void Begin()
         {
-            var cs = ConnectionString;
-            if (mars)
+            var transaction = _connection.BeginTransaction();
+            _transaction = transaction;
+        }
+
+        public void Rollback()
+        {
+            _transaction.Rollback();
+            Dispose();
+        }
+
+        public void Commit()
+        {
+            try
             {
-                var scsb = new SqlConnectionStringBuilder(cs)
-                {
-                    MultipleActiveResultSets = true
-                };
-                cs = scsb.ConnectionString;
+               _transaction.Commit();
             }
-            var connection = new SqlConnection(cs);
-            connection.Open();
-            return connection;
+            catch
+            {
+                _transaction.Rollback();
+                throw;
+            }
+            finally
+            {
+                Dispose();
+            }
         }
 
-        public SqlConnection GetClosedConnection()
+        private IDbConnection GetOpenConnection()
         {
-            var conn = new SqlConnection(ConnectionString);
-            if (conn.State != ConnectionState.Closed) throw new InvalidOperationException("should be closed!");
-            return conn;
+            if(_transaction == null)
+            {
+                var connection = new SqlConnection(ConnectionString);
+                connection.Open();
+                return connection;
+            }
+            else
+            {
+                return _transaction.Connection;
+            }
         }
 
-
-
-        public void Dispose()
+        private void Dispose()
         {
+            _transaction = null;
+            _transaction?.Dispose();
+            _connection.Close();
             _connection?.Dispose();
             GC.SuppressFinalize(this);
         }
