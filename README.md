@@ -7,10 +7,8 @@ DDD template for new projects
 - Domain Driven Design
 - MediatR
 - Domain Events
-- Unit Of Work
 - .NET Core
 - FluentValidator 
 - Native .NET Core DI
 - Automapper
-- Dapper
-- Dapper.Contrib
+- Entity Framework Core
