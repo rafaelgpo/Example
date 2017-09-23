@@ -24,17 +24,16 @@ namespace Example.API.Controllers
             _userApp = userApp;
         }
 
-
         // GET: api/User
         [HttpGet]
-        public async Task<MessageHttpResponse> Get()
+        public MessageHttpResponse Get()
         {
-            return HttpResponse(await _userApp.GetAll());
+            return HttpResponse(_userApp.GetAll());
         }
 
         //GET: api/User/5
         [HttpGet("{id}", Name = "Get")]
-        public async Task<MessageHttpResponse> Get(int id)
+        public async Task<MessageHttpResponse> Get(Guid id)
         {
             return HttpResponse(await _userApp.Get(id));
         }
@@ -44,15 +43,6 @@ namespace Example.API.Controllers
         public async Task<MessageHttpResponse> Post([FromBody] UserViewModel user)
         {
             return HttpResponse(await _userApp.Add(user));
-        }
-
-        // Copy: api/User
-        [HttpPost]
-        [Route("Copy")]
-        public async Task<MessageHttpResponse> Copy([FromBody] CopyUserViewModel copyUser)
-        {
-            await _userApp.Copy(copyUser.oldEmail, copyUser.newEmail);
-            return HttpResponse();
         }
 
         // PUT: api/User
@@ -65,11 +55,13 @@ namespace Example.API.Controllers
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public async Task<MessageHttpResponse> Delete(int id)
+        public async Task<MessageHttpResponse> Delete(Guid id)
         {
             await _userApp.Delete(id);
 
             return HttpResponse();
         }
+
+
     }
 }

@@ -1,65 +1,58 @@
-﻿using System;
-using System.Data;
-using System.Data.SqlClient;
+﻿using Example.Domain.Model;
+using Example.Domain.Repository.Interface;
+using Example.Repository.Context;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Example.Repository
 {
-    public abstract class BaseRepository : IBaseRepository
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : Entity
     {
-        private static string ConnectionString = "Data Source=localhost;Initial Catalog=example;Integrated Security=SSPI;";
+        protected readonly ExampleContext Db;
+        protected readonly DbSet<TEntity> DbSet;
 
-        protected IDbConnection _connection { get { return GetOpenConnection(); } }
-        public IDbTransaction _transaction { get; set; }
-
-        public void Begin()
+        public BaseRepository(ExampleContext context)
         {
-            var transaction = _connection.BeginTransaction();
-            _transaction = transaction;
+            Db = context;
+            DbSet = Db.Set<TEntity>();
         }
 
-        public void Rollback()
+        public virtual async Task Add(TEntity obj)
         {
-            _transaction.Rollback();
-            Dispose();
+            await DbSet.AddAsync(obj);
         }
 
-        public void Commit()
+        public virtual async Task<TEntity> GetById(Guid id)
         {
-            try
-            {
-               _transaction.Commit();
-            }
-            catch
-            {
-                _transaction.Rollback();
-                throw;
-            }
-            finally
-            {
-                Dispose();
-            }
+            return await DbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        private IDbConnection GetOpenConnection()
+        public virtual async Task<List<TEntity>> GetAll()
         {
-            if(_transaction == null)
-            {
-                var connection = new SqlConnection(ConnectionString);
-                connection.Open();
-                return connection;
-            }
-            else
-            {
-                return _transaction.Connection;
-            }
+            return await DbSet.AsNoTracking().ToListAsync();
         }
 
-        private void Dispose()
+        public virtual void Update(TEntity obj)
         {
-            _transaction = null;
-            _transaction?.Dispose();
-            _connection.Close();
-            _connection?.Dispose();
+            DbSet.Update(obj);
+        }
+
+        public virtual void Remove(Guid id)
+        {
+            DbSet.Remove(DbSet.Find(id));
+        }
+
+        public async Task<int> SaveChanges()
+        {
+            return await Db.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            Db.Dispose();
             GC.SuppressFinalize(this);
         }
     }
