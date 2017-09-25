@@ -12,6 +12,6 @@ namespace Example.Domain.Repository.Interface
         Task<List<TEntity>> GetAll();
         void Update(TEntity obj);
         void Remove(Guid id);
-        Task<int> SaveChanges();
+        Task<int> Commit();
     }
 }

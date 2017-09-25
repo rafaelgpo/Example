@@ -27,7 +27,7 @@ namespace Example.Repository
 
         public virtual async Task<TEntity> GetById(Guid id)
         {
-            return await DbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await DbSet.FindAsync(id);
         }
 
         public virtual async Task<List<TEntity>> GetAll()
@@ -40,12 +40,12 @@ namespace Example.Repository
             DbSet.Update(obj);
         }
 
-        public virtual void Remove(Guid id)
+        public virtual async Task Remove(Guid id)
         {
-            DbSet.Remove(DbSet.Find(id));
+            DbSet.Remove(await DbSet.FindAsync(id));
         }
 
-        public async Task<int> SaveChanges()
+        public async Task<int> Commit()
         {
             return await Db.SaveChangesAsync();
         }
