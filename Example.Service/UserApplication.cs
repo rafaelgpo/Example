@@ -28,7 +28,7 @@ namespace Example.Application
             if (_userValidation.IsValidForAdd(user))
                 await _repository.Add(user);
 
-            await _repository.SaveChanges();
+            await _repository.Commit();
 
             return user.Id;
         }
@@ -40,7 +40,7 @@ namespace Example.Application
             if (_userValidation.Exists(user))
             {
                 _repository.Remove(id);
-                await _repository.SaveChanges();
+                await _repository.Commit();
             }
         }
 
@@ -63,12 +63,14 @@ namespace Example.Application
         public async Task Update(UserViewModel userViewModel)
         {
             var user = Mapper.Map<UserViewModel, User>(userViewModel);
+
             var userOld = await _repository.GetById(user.Id);
 
             if (_userValidation.Exists(userOld) && _userValidation.IsValidForUpdate(user))
             {
                 _repository.Update(user);
-                await _repository.SaveChanges();
+
+                await _repository.Commit();
             }
         }
     }
