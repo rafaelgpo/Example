@@ -39,7 +39,7 @@ namespace Example.Application
 
             if (_userValidation.Exists(user))
             {
-                _repository.Remove(id);
+                await _repository.Remove(id);
                 await _repository.Commit();
             }
         }

@@ -11,7 +11,7 @@ namespace Example.Domain.Repository.Interface
         Task<TEntity> GetById(Guid id);
         Task<List<TEntity>> GetAll();
         void Update(TEntity obj);
-        void Remove(Guid id);
+        Task Remove(Guid id);
         Task<int> Commit();
     }
 }
